@@ -147,10 +147,10 @@ def show_doctors():
             'Degree': column2,
         }))
     except:
-        st.write(pd.DataFrame({
+        st.write(pd.DataFrame([{
             'Email': "",
             'Degree': "",
-        }))
+        }]))
 def show_specialize():
     try:
         column1 = run_query("SELECT id FROM Specialize;")
@@ -280,11 +280,11 @@ def create_doctor():
     new_val2 = st.text_input('Degree')
     if new_val1 != "" and new_val2 != "":
         try:
-            run_query_c(f"INSERT INTO Doctor VALUES ({new_val1}, '{new_val2}');")
+            run_query_c(f"INSERT INTO Doctor VALUES ('{new_val1}', '{new_val2}');")
             
         except:
             run_query_c("CREATE TABLE Doctor(email varchar(60) UNIQUE,degree varchar(20) NOT NULL,FOREIGN KEY (email) References Users (email) ON DELETE CASCADE ON UPDATE CASCADE); )")
-            run_query_c(f"INSERT INTO Doctor VALUES ({new_val1}, '{new_val2}');")
+            run_query_c(f"INSERT INTO Doctor VALUES ('{new_val1}', '{new_val2}');")
             
 def create_specialize():
     new_val1 = st.number_input('ID', step=1)
