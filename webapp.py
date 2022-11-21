@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
 @st.experimental_singleton
 def init_connection():
-    return psycopg2.connect(**st.secrets["postgres"])
+    return psycopg2.connect("postgresql://postgres:dotabuff1337@db.oidskocmuodqakzzqbsu.supabase.co:5432/postgres")
 
 conn = init_connection()
 
