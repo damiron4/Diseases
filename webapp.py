@@ -215,27 +215,33 @@ def create_diseases():
     if new_val1 != "" and new_val2 != "" and new_val3 != "" and new_val4 != 0:
         try:
             run_query_c(f"INSERT INTO Disease VALUES ('{new_val1}', '{new_val2}', '{new_val3}', {new_val4});")
+            st.experimental_rerun()
         except: 
             run_query_c("CREATE TABLE Disease(disease_code varchar(50) PRIMARY KEY,pathogen varchar(20) NOT NULL,description varchar(140) NOT NULL,id integer NOT NULL,FOREIGN KEY (id) References DiseaseType (id) ON DELETE CASCADE ON UPDATE CASCADE);")
             run_query_c(f"INSERT INTO Disease VALUES ('{new_val1}', '{new_val2}', '{new_val3}', {new_val4});")
+            st.experimental_rerun()
 def create_disease_types():
     new_val1 = st.number_input('ID of the disease', step=1)
     new_val2 = st.text_input('Description of the disease')  
     if new_val1 != 0 and new_val2 != "":
         try:
             run_query_c(f"INSERT INTO Diseasetype VALUES ({new_val1}, '{new_val2}');")
+            st.experimental_rerun()
         except: 
             run_query_c("CREATE TABLE Diseasetype(id integer PRIMARY KEY,description varchar(140) NOT NULL); ")
             run_query_c(f"INSERT INTO Diseasetype VALUES ({new_val1}, '{new_val2}');")
+            st.experimental_rerun()
 def create_country():
     new_val1 = st.text_input('Country')
     new_val2 = st.number_input('Population', step=1)
     if new_val1 != "" and new_val2 != 0:
         try:
             run_query_c(f"INSERT INTO Country VALUES ('{new_val1}', '{new_val2}');")
+            st.experimental_rerun()
         except: 
             run_query_c("CREATE TABLE Country(cname varchar(50) PRIMARY KEY,population bigint NOT NULL);")
             run_query_c(f"INSERT INTO Country VALUES ('{new_val1}', '{new_val2}');")
+            st.experimental_rerun()
 def create_discover():
     new_val1 = st.text_input('Country')
     new_val2 = st.text_input('Disease code')
@@ -243,9 +249,11 @@ def create_discover():
     if new_val1 != "" and new_val2 != "" and new_val3 != "":
         try:
             run_query_c(f"INSERT INTO Discover VALUES ('{new_val1}', '{new_val2}', '{new_val3}');")
+            st.experimental_rerun()
         except: 
             run_query_c("CREATE TABLE Discover(cname varchar(50) NOT NULL,disease_code varchar(50) NOT NULL,first_enc_date date NOT NULL, FOREIGN KEY (disease_code) References Disease (disease_code) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (cname) References Country (cname) ON DELETE CASCADE ON UPDATE CASCADE); ")
             run_query_c(f"INSERT INTO Discover VALUES ('{new_val1}', '{new_val2}', '{new_val3}');")
+            st.experimental_rerun()
 def create_user():
     new_val1 = st.text_input('Email')
     new_val2 = st.text_input('Name')  
@@ -256,36 +264,44 @@ def create_user():
     if new_val1 != "" and new_val2 != "" and new_val3 != "" and new_val4 != 0 and new_val5 != "" and new_val6 != "":
         try:
             run_query_c(f"INSERT INTO Users VALUES ('{new_val1}', '{new_val2}', '{new_val3}', {new_val4}, '{new_val5}', '{new_val6}');")
+            st.experimental_rerun()
         except:
             run_query_c("CREATE TABLE Users(email varchar(60) PRIMARY KEY,name varchar(30) NOT NULL,surname varchar(40) NOT NULL,salary integer,phone varchar(20) NOT NULL,cname varchar(50) NOT NULL,FOREIGN KEY (cname) References Country (cname) ON DELETE CASCADE ON UPDATE CASCADE);")
             run_query_c(f"INSERT INTO Users VALUES ('{new_val1}', '{new_val2}', '{new_val3}', {new_val4}, '{new_val5}', '{new_val6}');")
+            st.experimental_rerun()
 def create_public_servant():
     new_val1 = st.text_input('Email')
     new_val2 = st.text_input('Department')
     if new_val1 != "" and new_val2 != "":
         try:
             run_query_c(f"INSERT INTO PublicServant VALUES ({new_val1}, '{new_val2}');")
+            st.experimental_rerun()
         except:
             run_query_c("CREATE TABLE PublicServant(email varchar(60) UNIQUE, department varchar(50) NOT NULL,FOREIGN KEY (email) References Users (email) ON DELETE CASCADE ON UPDATE CASCADE);)")
             run_query_c(f"INSERT INTO PublicServant VALUES ({new_val1}, '{new_val2}');")
+            st.experimental_rerun()
 def create_doctor():
     new_val1 = st.text_input('Email')
     new_val2 = st.text_input('Degree')
     if new_val1 != "" and new_val2 != "":
         try:
             run_query_c(f"INSERT INTO Doctor VALUES ({new_val1}, '{new_val2}');")
+            st.experimental_rerun()
         except:
             run_query_c("CREATE TABLE Doctor(email varchar(60) UNIQUE,degree varchar(20) NOT NULL,FOREIGN KEY (email) References Users (email) ON DELETE CASCADE ON UPDATE CASCADE); )")
             run_query_c(f"INSERT INTO Doctor VALUES ({new_val1}, '{new_val2}');")
+            st.experimental_rerun()
 def create_specialize():
     new_val1 = st.number_input('ID', step=1)
     new_val2 = st.text_input('Email')
     if new_val1 != 0 and new_val2 != "":
         try:
             run_query_c(f"INSERT INTO Specialize VALUES ({new_val1}, '{new_val2}');")
+            st.experimental_rerun()
         except:
             run_query_c("CREATE TABLE Specialize(id integer NOT NULL,email varchar(60) NOT NULL,FOREIGN KEY (id) References DiseaseType (id) ON DELETE CASCADE ON UPDATE CASCADE,FOREIGN KEY (email) References Doctor (email) ON DELETE CASCADE ON UPDATE CASCADE);)")
             run_query_c(f"INSERT INTO Specialize VALUES ({new_val1}, '{new_val2}');")
+            st.experimental_rerun()
 def create_record():
     new_val1 = st.text_input('Email')
     new_val2 = st.text_input('Country')  
@@ -295,9 +311,11 @@ def create_record():
     if new_val1 != "" and new_val2 != "" and new_val3 != "" and new_val4 != 0 and new_val5 != 0:
         try:
             run_query_c(f"INSERT INTO Record VALUES('{new_val1}', '{new_val2}', '{new_val3}', {new_val4}, {new_val5})")
+            st.experimental_rerun()
         except:
             run_query_c("CREATE TABLE Record(email varchar(60) NOT NULL,cname varchar(50) NOT NULL, disease_code varchar(50) NOT NULL,total_deaths integer NOT NULL,total_patients integer NOT NULL,FOREIGN KEY (disease_code) References Disease (disease_code) ON DELETE CASCADE ON UPDATE CASCADE,FOREIGN KEY (cname) References Country (cname) ON DELETE CASCADE ON UPDATE CASCADE,FOREIGN KEY (email) References PublicServant (email) ON DELETE CASCADE ON UPDATE CASCADE);)")
             run_query_c(f"INSERT INTO Record VALUES('{new_val1}', '{new_val2}', '{new_val3}', {new_val4}, {new_val5}")
+            st.experimental_rerun()
 
 def update_disease_type():
     row = st.number_input("Choose the row by id", step=1)
@@ -413,7 +431,7 @@ def delete_record():
 option = st.selectbox('Choose an option', ('CREATE', 'READ', 'UPDATE', 'DELETE'))
 
 if option == 'CREATE':
-    option2 = st.selectbox('Choose the parameter', ('Disease Types', 'Diseases', 'Countries', 'Discovery', 'Users', 'Public Servants', 'Doctor', 'Specialize', 'Record'))
+    option2 = st.selectbox('Choose the table', ('Disease Types', 'Diseases', 'Countries', 'Discovery', 'Users', 'Public Servants', 'Doctor', 'Specialize', 'Record'))
     if option2 == "Disease Types":
         create_disease_types() 
         show_disease_types()
