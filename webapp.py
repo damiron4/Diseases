@@ -1,7 +1,8 @@
 import streamlit as st
 import psycopg2
 import pandas as pd
-
+from sqlalchemy import create_engine  
+from sqlalchemy.sql import text
 
 
 # Initialize connection.
@@ -222,10 +223,10 @@ def create_disease_types():
     new_val2 = st.text_input('Description of the disease')  
     if new_val1 != 0 and new_val2 != "":
         try:
-            run_query_c(f"INSERT INTO Diseasetype VALUES ('{new_val1}', '{new_val2}');")
+            run_query_c(f"INSERT INTO Diseasetype VALUES ({new_val1}, '{new_val2}');")
         except: 
             run_query_c("CREATE TABLE Diseasetype(id integer PRIMARY KEY,description varchar(140) NOT NULL); ")
-            run_query_c(f"INSERT INTO Diseasetype VALUES ('{new_val1}', '{new_val2}');")
+            run_query_c(f"INSERT INTO Diseasetype VALUES ({new_val1}, '{new_val2}');")
 def create_country():
     new_val1 = st.text_input('Country')
     new_val2 = st.number_input('Population', step=1)
@@ -460,50 +461,43 @@ elif(option == 'READ'):
 elif(option == 'UPDATE'):
     option2 = st.selectbox('Choose which table to update', ('Disease Types', 'Diseases', 'Countries', 'Discoveries', 'Users', 'Public Servants', 'Doctor', 'Specialize', 'Record'))        
     if option2 == "Disease Types":
-            update_disease_type()
-            show_disease_types()
-            st.experimental_rerun()
+        update_disease_type()
+        show_disease_types()
+        st.experimental_rerun()
     elif option2 == "Diseases":   
         update_disease()
         show_diseases()
+        st.experimental_rerun()
     elif option2 == "Countries":
-        if st.button("Delete this table"):
-            delete_country()
-            st.experimental_rerun()   
+        update_country()
         show_countries()
+        st.experimental_rerun()
     elif option2 == 'Discoveries':
-        if st.button("Delete this table"):
-            delete_discover()   
-            st.experimental_rerun()   
+        update_discovery()
         show_discoveries()
+        st.experimental_rerun()
     elif option2 == "Users":
-        if st.button("Delete this table"):
-            delete_users()     
-            st.experimental_rerun()   
+        update_user()  
         show_users()
+        st.experimental_rerun()
     elif option2 == "Public Servants":
-        if st.button("Delete this table"):
-            delete_public_servant()   
-            st.experimental_rerun()   
+        update_public_servant() 
         show_public_servants()
+        st.experimental_rerun()
     elif option2 == "Doctor":
-        if st.button("Delete this table"):
-            delete_doctor()   
-            st.experimental_rerun()   
+        update_doctor()
         show_doctors()
+        st.experimental_rerun()
     elif option2 == "Specialize":
-        if st.button("Delete this table"):
-            delete_specialize()   
-            st.experimental_rerun()   
+        update_specialize() 
         show_specialize()
+        st.experimental_rerun()
     elif option2 == "Record":
-        if st.button("Delete this table"):
-            delete_record()   
-            st.experimental_rerun()   
+        update_record()
         show_records()
+        st.experimental_rerun()
     
-
-else: #delete 
+elif(option=="DELETE"): #delete 
     option2 = st.selectbox('Choose which table to delete', ('Disease Types', 'Diseases', 'Countries', 'Discoveries', 'Users', 'Public Servants', 'Doctor', 'Specialize', 'Record'))        
     if option2 == "Disease Types":
         show_disease_types()
